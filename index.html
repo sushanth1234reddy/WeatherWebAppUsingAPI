@@ -41,6 +41,7 @@
                
                     let inn=await data.json();
                     console.log(inn);
+                    result.style.color="black";
                     result.innerHTML=`
                     <h2>City Name: ${inn.name}</h2>
                     <p>Humidity: ${inn.main.humidity}g/m<sup>3</sup></p>
