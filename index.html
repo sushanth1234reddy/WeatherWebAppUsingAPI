@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather web app</title>
+    <style>
+        body{
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+    <h2>Get Your City Weather Details</h2>
+    <input type="text" id="mycity" placeholder="Enter your city name">
+    <button id="btn">GetData</button>
+    </div>
+    <div id="res" style="font-weight: bold;"></div>
+    <script>
+        
+        let btn=document.getElementById("btn");
+        let result=document.getElementById("res");
+        btn.addEventListener("click",()=>{
+            let city=document.getElementById("mycity").value;
+            if(city==""){
+                result.style.color="orange";
+                result.innerHTML=`<b>Please enter City</b>`;
+            }
+            else{
+            async function mydata(){
+                let apikey="14138388ccb766d1ddb24de34329332b"
+                let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}`;
+                
+                try{
+                    let data=await fetch(url);
+                    // console.log(data)
+                    if(!data.ok){
+                        throw new Error("Could not Find City");
+                    }
+               
+                    let inn=await data.json();
+                    console.log(inn);
+                    result.innerHTML=`
+                    <h2>City Name: ${inn.name}</h2>
+                    <p>Humidity: ${inn.main.humidity}g/m<sup>3</sup></p>
+                    <p>Temperature: ${inn.main.temp}<sup>o</sup>C</p>
+                     <p>Wind Speed: ${inn.wind.speed} km/hr</p>
+                      <p>Description: ${inn.weather[0].description}</p>`;
+                }
+                
+                catch(error){
+                    result.style.color="red";
+                    result.innerHTML=`<b>${error.message}</b>`;
+
+                }
+
+            }
+            mydata();
+        }
+            
+        })
+    
+    </script>
+</body>
+</html>
